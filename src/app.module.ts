@@ -4,6 +4,15 @@ import { AppService } from './app.service';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { join } from 'path';
+import { ActivityModule } from './activity/activity.module';
+import { UpcomingEventModule } from './upcoming-event/upcoming-event.module';
+import { EventRegistrationModule } from './event-registration/event-registration.module';
+import { TeamMemberModule } from './team-member/team-member.module';
+import { BlogModule } from './blog/blog.module';
+import { ProductCategoryModule } from './product-category/product-category.module';
+import { ProductModule } from './product/product.module';
+import { ContactUsModule } from './contact-us/contact-us.module';
+import { MemberReferenceModule } from './member-reference/member-reference.module';
 
 @Module({
   imports: [
@@ -23,8 +32,11 @@ import { join } from 'path';
         migrations: ['dist/migration/*.js'],
       })
     }),
+    ActivityModule, UpcomingEventModule, EventRegistrationModule,
+    TeamMemberModule, BlogModule, ProductCategoryModule,
+    ProductModule, ContactUsModule, MemberReferenceModule,
   ],
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule {}
+export class AppModule { }

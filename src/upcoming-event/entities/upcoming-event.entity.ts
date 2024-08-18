@@ -10,8 +10,8 @@ export class UpcomingEvent {
     @Column()
     topic: string;
 
-    @Column({nullable:true})
-    date: string;
+    @Column({ nullable: true })
+    date: Date;
 
     @Column()
     location: string;
@@ -19,7 +19,7 @@ export class UpcomingEvent {
     @Column()
     description: string;
 
-    
+
     @Column()
     createdBy: number;
 
@@ -40,5 +40,5 @@ export class UpcomingEvent {
 
     @Exclude()
     @OneToMany(() => EventRegistration, (eventRegistration) => eventRegistration.upcomingEvents)
-    eventRegistrations:EventRegistration [];
+    eventRegistrations: EventRegistration[];
 }

@@ -1,6 +1,6 @@
 import { Exclude } from "class-transformer";
-import { MemberReference } from "src/member-reference/entities/member-reference.entity";
-import { Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { MemberReference } from "../../member-reference/entities/member-reference.entity";
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity()
 export class TeamMember {

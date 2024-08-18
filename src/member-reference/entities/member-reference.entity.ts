@@ -1,5 +1,5 @@
-import { ProductCategory } from "src/product-category/entities/product-category.entity";
-import { TeamMember } from "src/team-member/entities/team-member.entity";
+import { ProductCategory } from "../../product-category/entities/product-category.entity";
+import { TeamMember } from "../../team-member/entities/team-member.entity";
 import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity()

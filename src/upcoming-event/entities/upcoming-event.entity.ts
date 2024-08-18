@@ -10,7 +10,7 @@ export class UpcomingEvent {
     @Column()
     topic: string;
 
-    @Column({ nullable: true })
+    @Column()
     date: Date;
 
     @Column()

@@ -1,15 +1,51 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable, InternalServerErrorException } from '@nestjs/common';
 import { CreateActivityDto } from './dto/create-activity.dto';
 import { UpdateActivityDto } from './dto/update-activity.dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Activity } from './entities/activity.entity';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class ActivityService {
-  create(createActivityDto: CreateActivityDto) {
-    return 'This action adds a new activity';
+  constructor(
+    @InjectRepository(Activity) private readonly activityRepository: Repository<Activity>
+  ){}
+
+  async create(createActivityDto: CreateActivityDto) {
+    if (createActivityDto.createdBy == null ) {
+      throw new BadRequestException('When creating a activity, created by is a required field.');
+    }
+
+    try {
+      createActivityDto.createdAt = new Date();
+      const activity = this.activityRepository.create(createActivityDto);
+      const activityEntity = await this.activityRepository.save(activity);;
+      return activityEntity != null ? activityEntity : "Can't save the activity. Please check the details & try again.";
+    } catch (error) {
+      throw new InternalServerErrorException('Failed to create activity', error.message);
+    }
   }
 
-  findAll() {
-    return `This action returns all activity`;
+  async findAll() {
+    try {
+      const allActivities: Activity[] = await this.activityRepository.find({
+        relations: [],
+      })
+
+      if (allActivities) {
+        let finalizeActivities: Activity[] = allActivities.filter((element) => {
+          if (element.deletedBy == null) {
+            return (
+              element
+            )
+          }
+        })
+        return finalizeActivities.length == 0 ? 'No Activities found.' : finalizeActivities;
+      }
+      return 'No Activities found.';
+    } catch (error) {
+      throw new InternalServerErrorException('Failed to retrieve activities', error.message);
+    }
   }
 
   findOne(id: number) {

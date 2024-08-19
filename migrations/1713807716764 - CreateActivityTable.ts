@@ -24,18 +24,22 @@ export class CreateActivityTable1713807716764 implements MigrationInterface {
           {
             name: 'imagePath',
             type: 'varchar',
+            isNullable: true,
           },
           {
             name: 'createdBy',
             type: 'integer',
+            isNullable: true,
           },
           {
             name: 'updatedBy',
             type: 'integer',
+            isNullable: true,
           },
           {
             name: 'deletedBy',
             type: 'integer',
+            isNullable: true,
           },
           {
             name: 'createdAt',

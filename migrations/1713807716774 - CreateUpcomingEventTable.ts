@@ -32,6 +32,7 @@ export class CreateUpcomingEventTable1713807716774 implements MigrationInterface
           {
             name: 'createdBy',
             type: 'integer',
+            isNullable: true,
           },
           {
             name: 'updatedBy',

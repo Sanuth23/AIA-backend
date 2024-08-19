@@ -45,11 +45,11 @@ export class MemberReference {
     deletedAt: Date;
 
     @ManyToOne(() => ProductCategory, (productCategory) => productCategory.memberReferences)
-    @JoinColumn({name:'productCategoryId'})
+    @JoinColumn({ name: 'productCategoryId' })
     productCategory: ProductCategory;
 
     @ManyToOne(() => TeamMember, (teamMember) => teamMember.memberReferences)
-    @JoinColumn({name:'teamMemberId'})
+    @JoinColumn({ name: 'teamMemberId' })
     teamMember: TeamMember;
 }
 

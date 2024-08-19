@@ -44,6 +44,7 @@ export class CreateEventRegistrationTable1713807716777 implements MigrationInter
           {
             name: 'createdBy',
             type: 'integer',
+            isNullable: true,
           },
           {
             name: 'updatedBy',

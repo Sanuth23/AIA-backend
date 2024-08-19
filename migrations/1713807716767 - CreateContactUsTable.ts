@@ -32,6 +32,7 @@ export class CreateContactUsTable1713807716767 implements MigrationInterface {
           {
             name: 'createdBy',
             type: 'integer',
+            isNullable: true,
           },
           {
             name: 'updatedBy',

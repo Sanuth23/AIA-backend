@@ -40,6 +40,7 @@ export class CreateMemberReferenceTable1713807716779 implements MigrationInterfa
           {
             name: 'createdBy',
             type: 'integer',
+            isNullable: true,
           },
           {
             name: 'updatedBy',

@@ -28,14 +28,17 @@ export class CreateTeamMemberTable1713807716773 implements MigrationInterface {
           {
             name: 'link1',
             type: 'varchar',
+            isNullable: true,
           },
           {
             name: 'link2',
             type: 'varchar',
+            isNullable: true,
           },
           {
             name: 'link3',
             type: 'varchar',
+            isNullable: true,
           },
           {
             name: 'createdBy',

@@ -2,7 +2,7 @@ import { Exclude } from "class-transformer";
 import { EventRegistration } from "../../event-registration/entities/event-registration.entity";
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 
-@Entity()
+@Entity({ name: 'upcoming_event' })
 export class UpcomingEvent {
     @PrimaryGeneratedColumn()
     id: number;

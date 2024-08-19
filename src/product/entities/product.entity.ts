@@ -3,7 +3,7 @@ import { ProductCategory } from "../../product-category/entities/product-categor
 import { Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { ProductImage } from "./product-image.entity";
 
-@Entity()
+@Entity({ name: 'product' })
 export class Product {
     @PrimaryGeneratedColumn()
     id: number;
@@ -41,7 +41,7 @@ export class Product {
     productImages: ProductImage[];
 
     @ManyToOne(() => ProductCategory, (productCategory) => productCategory.products)
-    @JoinColumn({name:'categoryId'})
+    @JoinColumn({ name: 'categoryId' })
     productCategory: ProductCategory;
 }
 

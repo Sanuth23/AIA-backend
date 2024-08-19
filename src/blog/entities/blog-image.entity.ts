@@ -1,7 +1,7 @@
 import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 import { Blog } from "./blog.entity";
 
-@Entity()
+@Entity({ name: 'blog_image' })
 export class BlogImage {
     @PrimaryGeneratedColumn()
     id: number;

@@ -2,7 +2,7 @@ import { ProductCategory } from "../../product-category/entities/product-categor
 import { TeamMember } from "../../team-member/entities/team-member.entity";
 import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 
-@Entity()
+@Entity({ name: 'member_reference' })
 export class MemberReference {
     @PrimaryGeneratedColumn()
     id: number;

@@ -2,7 +2,7 @@ import { Exclude } from "class-transformer";
 import { MemberReference } from "../../member-reference/entities/member-reference.entity";
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 
-@Entity()
+@Entity({ name: 'team_member' })
 export class TeamMember {
     @PrimaryGeneratedColumn()
     id: number;

@@ -1,7 +1,7 @@
 import { UpcomingEvent } from "../../upcoming-event/entities/upcoming-event.entity";
 import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 
-@Entity()
+@Entity({ name: 'event_registration' })
 export class EventRegistration {
     @PrimaryGeneratedColumn()
     id: number;

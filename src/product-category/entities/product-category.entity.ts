@@ -3,7 +3,7 @@ import { MemberReference } from "../../member-reference/entities/member-referenc
 import { Product } from "../../product/entities/product.entity";
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 
-@Entity()
+@Entity({ name: 'product_category' })
 export class ProductCategory {
     @PrimaryGeneratedColumn()
     id: number;

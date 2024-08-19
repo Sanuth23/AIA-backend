@@ -2,7 +2,7 @@ import { Exclude } from "class-transformer";
 import { Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { BlogImage } from "./blog-image.entity";
 
-@Entity()
+@Entity({ name: 'blog' })
 export class Blog {
     @PrimaryGeneratedColumn()
     id: number;

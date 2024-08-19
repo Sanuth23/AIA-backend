@@ -1,6 +1,6 @@
 import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
 
-@Entity()
+@Entity({ name: 'activity' })
 export class Activity {
     @PrimaryGeneratedColumn()
     id: number;
@@ -14,7 +14,7 @@ export class Activity {
     @Column()
     imagePath: string;
 
-    
+
     @Column()
     createdBy: number;
 

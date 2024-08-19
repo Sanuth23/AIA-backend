@@ -13,6 +13,7 @@ import { ProductCategoryModule } from './product-category/product-category.modul
 import { ProductModule } from './product/product.module';
 import { ContactUsModule } from './contact-us/contact-us.module';
 import { MemberReferenceModule } from './member-reference/member-reference.module';
+import { SeedersService } from './seeders/seeders.service';
 
 @Module({
   imports: [
@@ -27,8 +28,9 @@ import { MemberReferenceModule } from './member-reference/member-reference.modul
         username: configService.get('DB_USERNAME'),
         password: configService.get('DB_PASSWORD'),
         database: configService.get('DB_NAME'),
+        autoLoadEntities: configService.get('DB_AUTO_LOAD_ENTITIES') == 'true' ? true : false,
+        synchronize: configService.get('DB_SYNCHRONIZE') == 'true' ? true : false,
         entities: [join(process.cwd(), 'dist/**/*.entity.js')],
-        synchronize: false,
         migrations: ['dist/migration/*.js'],
       })
     }),
@@ -37,6 +39,6 @@ import { MemberReferenceModule } from './member-reference/member-reference.modul
     ProductModule, ContactUsModule, MemberReferenceModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, SeedersService],
 })
 export class AppModule { }

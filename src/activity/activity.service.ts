@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable, InternalServerErrorException } from '@nestjs/common';
+import { BadRequestException, Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
 import { CreateActivityDto } from './dto/create-activity.dto';
 import { UpdateActivityDto } from './dto/update-activity.dto';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -9,10 +9,10 @@ import { Repository } from 'typeorm';
 export class ActivityService {
   constructor(
     @InjectRepository(Activity) private readonly activityRepository: Repository<Activity>
-  ){}
+  ) { }
 
   async create(createActivityDto: CreateActivityDto) {
-    if (createActivityDto.createdBy == null ) {
+    if (createActivityDto.createdBy == null) {
       throw new BadRequestException('When creating a activity, created by is a required field.');
     }
 
@@ -30,16 +30,14 @@ export class ActivityService {
     try {
       const allActivities: Activity[] = await this.activityRepository.find({
         relations: [],
-      })
+      });
 
       if (allActivities) {
         let finalizeActivities: Activity[] = allActivities.filter((element) => {
           if (element.deletedBy == null) {
-            return (
-              element
-            )
+            return (element)
           }
-        })
+        });
         return finalizeActivities.length == 0 ? 'No Activities found.' : finalizeActivities;
       }
       return 'No Activities found.';
@@ -48,15 +46,46 @@ export class ActivityService {
     }
   }
 
-  findOne(id: number) {
+  async findOne(id: number) {
     return `This action returns a #${id} activity`;
   }
 
-  update(id: number, updateActivityDto: UpdateActivityDto) {
-    return `This action updates a #${id} activity`;
+  async update(id: number, updateActivityDto: UpdateActivityDto) {
+    try {
+      const activity = await this.activityRepository.findOne({
+        where: { id },
+        relations: []
+      });
+
+      if (activity == null || activity.deletedBy != null) {
+        throw new NotFoundException('No Matching Activity to update.');
+      }
+
+      updateActivityDto.updatedAt = new Date();
+      Object.assign(activity, updateActivityDto);
+      await this.activityRepository.save(activity);
+      return "Activity updated successfully.";
+    } catch (error) {
+      throw new InternalServerErrorException('Failed to update activity', error.message);
+    }
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} activity`;
+  async remove(id: number, deletedBy: number) {
+    try {
+      const activity = await this.activityRepository.findOne({
+        where: { id }
+      });
+
+      if (activity == null || activity.deletedAt != null) {
+        throw new NotFoundException('There is no Activity to delete.');
+      }
+
+      activity.deletedBy = deletedBy;
+      activity.deletedAt = new Date();
+      await this.activityRepository.save(activity);
+      return 'Activity is deleted successfully.';
+    } catch (error) {
+      throw new InternalServerErrorException('Failed to delete activity', error.message);
+    }
   }
 }

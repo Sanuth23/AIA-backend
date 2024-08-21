@@ -38,6 +38,11 @@ export class ActivityService {
             return (element)
           }
         });
+
+        finalizeActivities.sort((a1, a2) =>
+          a2.createdAt.getTime() - a1.createdAt.getTime()
+        );
+
         return finalizeActivities.length == 0 ? 'No Activities found.' : finalizeActivities;
       }
       return 'No Activities found.';

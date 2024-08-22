@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable, InternalServerErrorException } from '@nestjs/common';
+import { BadRequestException, Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
 import { CreateEventRegistrationDto } from './dto/create-event-registration.dto';
 import { UpdateEventRegistrationDto } from './dto/update-event-registration.dto';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -13,7 +13,7 @@ export class EventRegistrationService {
 
   async create(createEventRegistrationDto: CreateEventRegistrationDto) {
 
-    if (createEventRegistrationDto.upcomingEventId != null) {
+    if (createEventRegistrationDto.upcomingEventId == null) {
       throw new BadRequestException('When creating a event registration, event id is a required field.');
     }
 
@@ -82,11 +82,42 @@ export class EventRegistrationService {
     return `This action returns a #${id} activity`;
   }
 
-  update(id: number, updateEventRegistrationDto: UpdateEventRegistrationDto) {
-    return `This action updates a #${id} eventRegistration`;
+  async update(id: number, updateEventRegistrationDto: UpdateEventRegistrationDto) {
+    try {
+      const eventReg = await this.eventRegRepository.findOne({
+        where: { id },
+        relations: ['upcomingEvent']
+      });
+
+      if (eventReg == null || eventReg.deletedBy != null || eventReg.upcomingEventId == null) {
+        throw new NotFoundException('No Matching Event Registration to update.');
+      }
+
+      updateEventRegistrationDto.updatedAt = new Date();
+      Object.assign(eventReg, updateEventRegistrationDto);
+      await this.eventRegRepository.save(eventReg);
+      return "Event Registration updated successfully.";
+    } catch (error) {
+      throw new InternalServerErrorException('Failed to update event registration', error.message);
+    }
   }
 
-  remove(id: number, deletedBy: number) {
-    return `This action removes a #${id} eventRegistration`;
+  async remove(id: number, deletedBy: number) {
+    try {
+      const eventReg = await this.eventRegRepository.findOne({
+        where: { id }
+      });
+
+      if (eventReg == null || eventReg.deletedAt != null) {
+        throw new NotFoundException('There is no Event Registration to delete.');
+      }
+
+      eventReg.deletedBy = deletedBy;
+      eventReg.deletedAt = new Date();
+      await this.eventRegRepository.save(eventReg);
+      return 'Event Registration is deleted successfully.';
+    } catch (error) {
+      throw new InternalServerErrorException('Failed to delete event registration', error.message);
+    }
   }
 }

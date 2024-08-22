@@ -39,6 +39,6 @@ export class UpcomingEvent {
     deletedAt: Date;
 
     @Exclude()
-    @OneToMany(() => EventRegistration, (eventRegistration) => eventRegistration.upcomingEvents)
+    @OneToMany(() => EventRegistration, (eventRegistration) => eventRegistration.upcomingEvent)
     eventRegistrations: EventRegistration[];
 }

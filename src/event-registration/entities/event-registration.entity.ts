@@ -48,5 +48,5 @@ export class EventRegistration {
 
     @ManyToOne(() => UpcomingEvent, (upcomingEvent) => upcomingEvent.eventRegistrations)
     @JoinColumn({name:'upcomingEventId'})
-    upcomingEvents: UpcomingEvent;
+    upcomingEvent: UpcomingEvent;
 }

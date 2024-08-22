@@ -86,7 +86,7 @@ export class EventRegistrationService {
     try {
       const eventReg = await this.eventRegRepository.findOne({
         where: { id },
-        relations: ['upcomingEvent']
+        relations: []
       });
 
       if (eventReg == null || eventReg.deletedBy != null || eventReg.upcomingEventId == null) {

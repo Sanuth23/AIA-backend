@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestjs/common';
 import { TeamMemberService } from './team-member.service';
 import { CreateTeamMemberDto } from './dto/create-team-member.dto';
 import { UpdateTeamMemberDto } from './dto/update-team-member.dto';
@@ -28,7 +28,7 @@ export class TeamMemberController {
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.teamMemberService.remove(+id);
+  remove(@Param('id') id: string, @Query('deletedBy') deletedBy: string)  {
+    return this.teamMemberService.remove(+id, +deletedBy);
   }
 }

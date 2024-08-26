@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestjs/common';
 import { ProductCategoryService } from './product-category.service';
 import { CreateProductCategoryDto } from './dto/create-product-category.dto';
 import { UpdateProductCategoryDto } from './dto/update-product-category.dto';
@@ -28,7 +28,7 @@ export class ProductCategoryController {
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.productCategoryService.remove(+id);
+  remove(@Param('id') id: string, @Query('deletedBy') deletedBy: string)  {
+    return this.productCategoryService.remove(+id, +deletedBy);
   }
 }

@@ -51,8 +51,20 @@ export class TeamMemberService {
     }
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} teamMember`;
+  async findOne(id: number) {
+    try {
+      const teamMember = await this.teamMemberRepository.findOne({
+        where: { id },
+        relations: []
+      });
+
+      if (teamMember == null || teamMember.deletedBy != null) {
+        return 'No Matching Team Member.';
+      }
+      return teamMember;
+    } catch (error) {
+      throw new NotFoundException('Team Member not found', error.message);
+    }
   }
 
   async update(id: number, updateTeamMemberDto: UpdateTeamMemberDto) {

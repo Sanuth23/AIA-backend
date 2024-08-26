@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable, InternalServerErrorException } from '@nestjs/common';
+import { BadRequestException, Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
 import { CreateMemberReferenceDto } from './dto/create-member-reference.dto';
 import { UpdateMemberReferenceDto } from './dto/update-member-reference.dto';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -10,7 +10,7 @@ export class MemberReferenceService {
   constructor(
     @InjectRepository(MemberReference) private readonly referenceRepository: Repository<MemberReference>
   ) { }
-  
+
   async create(createMemberReferenceDto: CreateMemberReferenceDto) {
     if (createMemberReferenceDto.teamMemberId == null && createMemberReferenceDto.productCategoryId == null) {
       throw new BadRequestException('When creating a member reference, member id & category id is a required field.');
@@ -108,10 +108,42 @@ export class MemberReferenceService {
   }
 
   async update(id: number, updateMemberReferenceDto: UpdateMemberReferenceDto) {
-    return `This action updates a #${id} memberReference`;
+    try {
+      const reference = await this.referenceRepository.findOne({
+        where: { id },
+        relations: []
+      });
+
+      if (reference == null || reference.deletedBy != null ||
+        reference.teamMemberId == null || reference.productCategoryId == null) {
+        throw new NotFoundException('No Matching Member Reference to update.');
+      }
+
+      updateMemberReferenceDto.updatedAt = new Date();
+      Object.assign(reference, updateMemberReferenceDto);
+      await this.referenceRepository.save(reference);
+      return "Member Reference updated successfully.";
+    } catch (error) {
+      throw new InternalServerErrorException('Failed to update member reference', error.message);
+    }
   }
 
-  async remove(id: number) {
-    return `This action removes a #${id} memberReference`;
+  async remove(id: number, deletedBy: number) {
+    try {
+      const reference = await this.referenceRepository.findOne({
+        where: { id }
+      });
+
+      if (reference == null || reference.deletedAt != null) {
+        throw new NotFoundException('There is no Member Reference to delete.');
+      }
+
+      reference.deletedBy = deletedBy;
+      reference.deletedAt = new Date();
+      await this.referenceRepository.save(reference);
+      return 'Member Reference is deleted successfully.';
+    } catch (error) {
+      throw new InternalServerErrorException('Failed to delete member reference', error.message);
+    }
   }
 }

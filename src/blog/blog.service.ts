@@ -51,8 +51,20 @@ export class BlogService {
     }
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} blog`;
+  async findOne(id: number) {
+    try {
+      const blog = await this.blogRepository.findOne({
+        where: { id },
+      });
+
+      if (blog == null || blog.deletedBy != null) {
+        throw new NotFoundException('Blog not found for the given ID.');
+      }
+      
+      return blog;
+    } catch (error) {
+      throw new InternalServerErrorException('Failed to find blog for the given id.', error.message);
+    }
   }
 
   async update(id: number, updateBlogDto: UpdateBlogDto) {

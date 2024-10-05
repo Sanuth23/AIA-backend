@@ -14,6 +14,8 @@ import { ProductModule } from './product/product.module';
 import { ContactUsModule } from './contact-us/contact-us.module';
 import { MemberReferenceModule } from './member-reference/member-reference.module';
 import { SeedersService } from './seeders/seeders.service';
+import { AuthService } from './auth/auth.service';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -36,9 +38,9 @@ import { SeedersService } from './seeders/seeders.service';
     }),
     ActivityModule, UpcomingEventModule, EventRegistrationModule,
     TeamMemberModule, BlogModule, ProductCategoryModule,
-    ProductModule, ContactUsModule, MemberReferenceModule,
+    ProductModule, ContactUsModule, MemberReferenceModule, AuthModule,
   ],
   controllers: [AppController],
-  providers: [AppService, SeedersService],
+  providers: [AppService, SeedersService, AuthService],
 })
 export class AppModule { }

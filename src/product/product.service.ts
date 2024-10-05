@@ -77,8 +77,20 @@ export class ProductService {
     }
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} product`;
+  async findOne(id: number) {
+    try {
+      const product = await this.productRepository.findOne({
+        where: { id },
+      });
+
+      if (product == null || product.deletedBy != null) {
+        throw new NotFoundException('Product not found');
+      }
+      
+      return product;
+    } catch (error) {
+      throw new InternalServerErrorException('Failed to find product.', error.message);
+    }
   }
 
   async update(id: number, updateProductDto: UpdateProductDto) {

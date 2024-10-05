@@ -59,11 +59,11 @@ export class TeamMemberService {
       });
 
       if (teamMember == null || teamMember.deletedBy != null) {
-        return 'No Matching Team Member.';
+        throw new NotFoundException('No Matching Team Member.');
       }
       return teamMember;
     } catch (error) {
-      throw new NotFoundException('Team Member not found', error.message);
+      throw new InternalServerErrorException('Failed to find team member.', error.message);
     }
   }
 

@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestjs/common';
 import { ContactUsService } from './contact-us.service';
 import { CreateContactUsDto } from './dto/create-contact-us.dto';
 import { UpdateContactUsDto } from './dto/update-contact-us.dto';
@@ -28,7 +28,7 @@ export class ContactUsController {
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.contactUsService.remove(+id);
+  remove(@Param('id') id: string, @Query('deletedBy') deletedBy: string) {
+    return this.contactUsService.remove(+id, +deletedBy);
   }
 }

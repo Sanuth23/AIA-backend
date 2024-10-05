@@ -84,12 +84,12 @@ export class ProductService {
       });
 
       if (product == null || product.deletedBy != null) {
-        throw new NotFoundException('Product not found');
+        throw new NotFoundException('Product not found for the given ID.');
       }
       
       return product;
     } catch (error) {
-      throw new InternalServerErrorException('Failed to find product.', error.message);
+      throw new InternalServerErrorException('Failed to find product for the given id.', error.message);
     }
   }
 

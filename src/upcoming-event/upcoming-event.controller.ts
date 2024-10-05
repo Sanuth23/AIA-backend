@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestjs/common';
 import { UpcomingEventService } from './upcoming-event.service';
 import { CreateUpcomingEventDto } from './dto/create-upcoming-event.dto';
 import { UpdateUpcomingEventDto } from './dto/update-upcoming-event.dto';
@@ -28,7 +28,7 @@ export class UpcomingEventController {
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.upcomingEventService.remove(+id);
+  remove(@Param('id') id: string, @Query('deletedBy') deletedBy: string) {
+    return this.upcomingEventService.remove(+id, +deletedBy);
   }
 }

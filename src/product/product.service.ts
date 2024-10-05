@@ -20,7 +20,7 @@ export class ProductService {
       createProductDto.createdAt = new Date();
       const product = this.productRepository.create(createProductDto);
       const productEntity = await this.productRepository.save(product);
-      return productEntity ? productEntity : "Can't save the event registration. Please check the details & try again.";
+      return productEntity ? productEntity : "Can't save the product. Please check the details & try again.";
     } catch (error) {
       throw new InternalServerErrorException('Failed to create product', error.message);
     }

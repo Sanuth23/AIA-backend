@@ -14,19 +14,7 @@ export class CreateProductCategoryTable1713807716770 implements MigrationInterfa
             generationStrategy: 'increment',
           },
           {
-            name: 'mainTitle',
-            type: 'varchar',
-          },
-          {
-            name: 'topic',
-            type: 'varchar',
-          },
-          {
-            name: 'coverAge',
-            type: 'varchar',
-          },
-          {
-            name: 'issueAge',
+            name: 'name',
             type: 'varchar',
           },
           {

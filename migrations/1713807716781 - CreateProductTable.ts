@@ -14,7 +14,19 @@ export class CreateProductTable1713807716781 implements MigrationInterface {
             generationStrategy: 'increment',
           },
           {
-            name: 'name',
+            name: 'mainTitle',
+            type: 'varchar',
+          },
+          {
+            name: 'topic',
+            type: 'varchar',
+          },
+          {
+            name: 'coverAge',
+            type: 'varchar',
+          },
+          {
+            name: 'issueAge',
             type: 'varchar',
           },
           {

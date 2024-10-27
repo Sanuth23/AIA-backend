@@ -104,7 +104,19 @@ export class MemberReferenceService {
   }
 
   async findOne(id: number) {
-    return `This action returns a #${id} memberReference`;
+    try {
+      const reference = await this.referenceRepository.findOne({
+        where: { id },
+      });
+
+      if (reference == null || reference.deletedBy != null) {
+        throw new NotFoundException('Member Reference not found for the given ID.');
+      }
+      
+      return reference;
+    } catch (error) {
+      throw new InternalServerErrorException('Failed to find member reference.', error.message);
+    }
   }
 
   async update(id: number, updateMemberReferenceDto: UpdateMemberReferenceDto) {

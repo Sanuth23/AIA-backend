@@ -52,8 +52,20 @@ export class UpcomingEventService {
     }
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} upcomingEvent`;
+  async findOne(id: number) {
+    try {
+      const event = await this.eventRepository.findOne({
+        where: { id },
+      });
+
+      if (event == null || event.deletedBy != null) {
+        throw new NotFoundException('Upcoming Event not found for the given ID.');
+      }
+      
+      return event;
+    } catch (error) {
+      throw new InternalServerErrorException('Failed to find upcoming event.', error.message);
+    }
   }
 
   async update(id: number, updateUpcomingEventDto: UpdateUpcomingEventDto) {

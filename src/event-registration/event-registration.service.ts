@@ -79,7 +79,19 @@ export class EventRegistrationService {
   }
 
   async findOne(id: number) {
-    return `This action returns a #${id} activity`;
+    try {
+      const eventReg = await this.eventRegRepository.findOne({
+        where: { id },
+      });
+
+      if (eventReg == null || eventReg.deletedBy != null) {
+        throw new NotFoundException('Event Registration not found for the given ID.');
+      }
+      
+      return eventReg;
+    } catch (error) {
+      throw new InternalServerErrorException('Failed to find event registration.', error.message);
+    }
   }
 
   async update(id: number, updateEventRegistrationDto: UpdateEventRegistrationDto) {

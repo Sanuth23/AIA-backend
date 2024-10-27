@@ -52,7 +52,19 @@ export class ActivityService {
   }
 
   async findOne(id: number) {
-    return `This action returns a #${id} activity`;
+    try {
+      const activity = await this.activityRepository.findOne({
+        where: { id },
+      });
+
+      if (activity == null || activity.deletedBy != null) {
+        throw new NotFoundException('Activity not found for the given ID.');
+      }
+      
+      return activity;
+    } catch (error) {
+      throw new InternalServerErrorException('Failed to find activity.', error.message);
+    }
   }
 
   async update(id: number, updateActivityDto: UpdateActivityDto) {

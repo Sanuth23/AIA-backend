@@ -52,7 +52,19 @@ export class ProductCategoryService {
   }
 
   async findOne(id: number) {
-    return `This action returns a #${id} productCategory`;
+    try {
+      const category = await this.categoryRepository.findOne({
+        where: { id },
+      });
+
+      if (category == null || category.deletedBy != null) {
+        throw new NotFoundException('Product Category not found for the given ID.');
+      }
+      
+      return category;
+    } catch (error) {
+      throw new InternalServerErrorException('Failed to find product category.', error.message);
+    }
   }
 
   async update(id: number, updateProductCategoryDto: UpdateProductCategoryDto) {

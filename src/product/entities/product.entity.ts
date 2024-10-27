@@ -9,7 +9,16 @@ export class Product {
     id: number;
 
     @Column()
-    name: string;
+    mainTitle: string;
+
+    @Column()
+    topic: string;
+
+    @Column()
+    coverAge: string;
+
+    @Column()
+    issueAge: string;
 
     @Column()
     description: string;

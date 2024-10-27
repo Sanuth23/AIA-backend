@@ -1,9 +1,21 @@
 import { IsString, IsNumber, IsOptional, IsDate } from 'class-validator';
 import { ProductImage } from '../entities/product-image.entity';
+import { CreateProductImageDto } from './create-product-image.dto';
 
 export class CreateProductDto {
     @IsString()
-    name: string;
+    mainTitle: string;
+
+    @IsString()
+    topic: string;
+
+    @IsNumber()
+    @IsOptional()
+    coverAge: string;
+
+    @IsNumber()
+    @IsOptional()
+    issueAge: string;
 
     @IsString()
     description: string;
@@ -36,5 +48,5 @@ export class CreateProductDto {
     deletedAt: Date;
 
     @IsOptional()
-    productImages: ProductImage[];
+    productImages: CreateProductImageDto[];
 }

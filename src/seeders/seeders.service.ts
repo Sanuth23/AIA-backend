@@ -231,13 +231,16 @@ export class SeedersService {
     }
     
     async seedProducts() {
-        const products = [
+        const products : CreateProductDto[] = [
             {
-                name: "Super Widget",
+                mainTitle: "Super Widget",
+                topic: "topic 1",
+                coverAge: "80",
+                issueAge: "30-60",
                 description: "A highly advanced widget.",
                 categoryId: 1,
                 createdBy: 1,
-                createdAt: new Date('2024-08-24'),
+                createdAt: new Date('2024-10-24'),
                 updatedBy: null,
                 deletedBy: null,
                 updatedAt: null,
@@ -245,15 +248,19 @@ export class SeedersService {
                 productImages: [
                     {
                         path: "/images/super-widget.jpg",
+                        productId: 1
                     }
                 ]
             },
             {
-                name: "Mega Gadget",
+                mainTitle: "Super Gadget",
+                topic: "topic 2",
+                coverAge: "70",
+                issueAge: "20-55",
                 description: "A gadget with extra features.",
                 categoryId: 2,
                 createdBy: 2,
-                createdAt: new Date('2024-08-25'),
+                createdAt: new Date('2024-10-25'),
                 updatedBy: null,
                 deletedBy: null,
                 updatedAt: null,

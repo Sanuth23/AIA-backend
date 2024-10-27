@@ -12,7 +12,7 @@ export class ProductService {
   ) { }
 
   async create(createProductDto: CreateProductDto) {
-    if (createProductDto.categoryId == null) {
+    if (!createProductDto || createProductDto.categoryId == null) {
       throw new BadRequestException('When creating a product, category id is a required field.');
     }
 

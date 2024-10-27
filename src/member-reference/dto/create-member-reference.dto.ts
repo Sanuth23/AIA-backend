@@ -11,6 +11,10 @@ export class CreateMemberReferenceDto {
     phoneNumber: string;
 
     @IsString()
+    @IsOptional()
+    phoneNumberOptional: string;
+
+    @IsString()
     description: string;
 
     @IsNumber()

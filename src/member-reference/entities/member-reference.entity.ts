@@ -17,6 +17,9 @@ export class MemberReference {
     phoneNumber: string;
 
     @Column()
+    phoneNumberOptional: string;
+
+    @Column()
     description: string;
 
     @Column()

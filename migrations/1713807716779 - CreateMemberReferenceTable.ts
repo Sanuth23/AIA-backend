@@ -26,6 +26,10 @@ export class CreateMemberReferenceTable1713807716779 implements MigrationInterfa
             type: 'varchar',
           },
           {
+            name: 'phoneNumberOptional',
+            type: 'varchar',
+          },
+          {
             name: 'description',
             type: 'varchar',
           },

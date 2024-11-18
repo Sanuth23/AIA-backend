@@ -1,26 +1,29 @@
-import { Injectable } from '@nestjs/common';
-import { CreateAuthDto } from './dto/create-auth.dto';
-import { UpdateAuthDto } from './dto/update-auth.dto';
+import { forwardRef, Inject, Injectable } from '@nestjs/common';
+import { JwtService } from '@nestjs/jwt';
+import { AdminService } from '../auth/admin.service';
+import * as bcrypt from 'bcryptjs';
+import { CreateLoginDto } from './dto/create-login.dto';
+import { Admin } from './entities/admin.entity';
 
 @Injectable()
 export class AuthService {
-  create(createAuthDto: CreateAuthDto) {
-    return 'This action adds a new auth';
+  constructor(
+    private adminService: AdminService,
+    private readonly jwtService: JwtService,
+  ) {}
+
+  async validateAdmin(createLoginDto: CreateLoginDto): Promise<Admin> {
+    const admin = await this.adminService.findByUsername(createLoginDto.username);
+    if (admin && await bcrypt.compare(createLoginDto.password, admin.password)) {
+      return admin;
+    }
+    return null;
   }
 
-  findAll() {
-    return `This action returns all auth`;
-  }
-
-  findOne(id: number) {
-    return `This action returns a #${id} auth`;
-  }
-
-  update(id: number, updateAuthDto: UpdateAuthDto) {
-    return `This action updates a #${id} auth`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} auth`;
+  async login(admin: any) {
+    const payload = { username: admin.username, sub: admin.id };
+    return {
+      access_token: this.jwtService.sign(payload),
+    };
   }
 }

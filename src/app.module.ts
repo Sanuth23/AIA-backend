@@ -16,6 +16,10 @@ import { MemberReferenceModule } from './member-reference/member-reference.modul
 import { SeedersService } from './seeders/seeders.service';
 import { AuthService } from './auth/auth.service';
 import { AuthModule } from './auth/auth.module';
+import { MailerModule } from '@nestjs-modules/mailer';
+import { EmailService } from './email/email.service';
+import { AdminService } from './auth/admin.service';
+import { JwtService } from '@nestjs/jwt';
 
 @Module({
   imports: [
@@ -36,11 +40,46 @@ import { AuthModule } from './auth/auth.module';
         migrations: ['dist/migration/*.js'],
       })
     }),
+    // MailerModule.forRoot({
+    //   transport: {
+    //     // host: 'smtp.gmail.com',
+    //     // port: 587, // Use 587 for TLS, 465 for SSL
+    //     // secure: false, // TLS is preferred for Gmail, so keep this false for port 587
+    //     host: 'smtp.mailtrap.io',
+    //     port: 2525,
+    //     auth: {
+    //       user: process.env.MAIL_USER,
+    //       pass: process.env.MAIL_PASSWORD,
+    //     },
+    //     // tls: {
+    //     //   ciphers: 'SSLv3',
+    //     // },
+    //   },
+    //   defaults: {
+    //     from: '"AIA Contact Us Form" <sanuth0000@gmail.com>',
+    //   },
+    // }),    
+    MailerModule.forRoot({
+      transport: {
+        service: 'gmail', // Use Gmail service
+        auth: {
+          type: 'OAuth2',
+          user: process.env.MAIL_USER, // Gmail email address
+          clientId: process.env.OAUTH_CLIENT_ID, // OAuth2 Client ID
+          clientSecret: process.env.OAUTH_CLIENT_SECRET, // OAuth2 Client Secret
+          refreshToken: process.env.OAUTH_REFRESH_TOKEN, // OAuth2 Refresh Token
+          accessToken: process.env.OAUTH_ACCESS_TOKEN, // Optional, auto-generated if using refresh token
+        },
+      },
+      defaults: {
+        from: '"Your Service Name" <eudaimonia.aia@gmail.com>', // Default "from" email address
+      },
+    }),
     ActivityModule, UpcomingEventModule, EventRegistrationModule,
     TeamMemberModule, BlogModule, ProductCategoryModule,
     ProductModule, ContactUsModule, MemberReferenceModule, AuthModule,
   ],
   controllers: [AppController],
-  providers: [AppService, SeedersService, AuthService],
+  providers: [AppService, SeedersService, EmailService],
 })
 export class AppModule { }

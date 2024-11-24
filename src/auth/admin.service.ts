@@ -1,4 +1,4 @@
-import { forwardRef, Inject, Injectable, NotFoundException } from '@nestjs/common';
+import { forwardRef, Inject, Injectable, NotAcceptableException, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Admin } from './entities/admin.entity';
@@ -10,10 +10,16 @@ import * as bcrypt from 'bcryptjs';
 export class AdminService {
   constructor(
     @InjectRepository(Admin) private readonly adminRepository: Repository<Admin>,
-  ) {}
+  ) { }
 
   async create(createAdminDto: CreateAdminDto): Promise<Admin> {
     const { username, password, isSuperAdmin } = createAdminDto;
+    const isExist = this.adminRepository.findOne({ where: { username } });
+    if (isExist) {
+      throw new NotAcceptableException("Username already exist");
+    }
+
+
     const hashedPassword = await bcrypt.hash(password, 10);
     const admin = this.adminRepository.create({
       username,
@@ -24,7 +30,7 @@ export class AdminService {
   }
 
   async updatePassword(id: number, updatePasswordDto: UpdatePasswordDto): Promise<Admin> {
-    const admin = await this.adminRepository.findOneBy({id : id});
+    const admin = await this.adminRepository.findOneBy({ id: id });
     if (!admin) {
       throw new NotFoundException('Admin not found');
     }

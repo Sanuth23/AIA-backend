@@ -1,6 +1,6 @@
 import { forwardRef, Inject, Injectable, NotAcceptableException, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { IsNull, Repository } from 'typeorm';
 import { Admin } from './entities/admin.entity';
 import { CreateAdminDto } from './dto/create-admin.dto';
 import { UpdatePasswordDto } from './dto/update-password.dto';
@@ -14,7 +14,7 @@ export class AdminService {
 
   async create(createAdminDto: CreateAdminDto): Promise<Admin> {
     const { username, password, isSuperAdmin } = createAdminDto;
-    const isExist = this.adminRepository.findOne({ where: { username } });
+    const isExist = await this.adminRepository.findOne({ where: { username } });
     if (isExist) {
       throw new NotAcceptableException("Username already exist");
     }
